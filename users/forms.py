@@ -77,23 +77,32 @@ class UserProfileForm(UserChangeForm):
         'placeholder': 'Введите Имя'
     }),)
 
+    last_name = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'w-full p-2 mb-4 bg-gray-200 text-black  border-b border-gray-600 focus:outline-none focus:border-blue-500',
+        'placeholder': 'Введите Фамилию'
+    }),)
+
     username = forms.CharField(widget=forms.TextInput(attrs={
         'class': 'w-full p-2 mb-4 bg-gray-200 text-black  border-b border-gray-600 focus:outline-none focus:border-blue-500',
-        'placeholder': 'Введите логин',
-        'readonly': True
+        'placeholder': 'Введите логин'
     }),)
     
     email = forms.CharField(widget=forms.TextInput(attrs={
         'class': 'w-full p-2 mb-4 bg-gray-200 text-black  border-b border-gray-600 focus:outline-none focus:border-blue-500',
         'placeholder': 'Введите почту',
-        'readonly': True
+    }),)
+
+    phone_number = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'w-full p-2 mb-4 bg-gray-200 text-black  border-b border-gray-600 focus:outline-none focus:border-blue-500',
+        'placeholder': 'Введите почту',
     }),)
 
     image = forms.ImageField(widget=forms.FileInput(attrs={
         'class': 'w-full p-2 mb-4 bg-gray-200 text-black  border-b border-gray-600 focus:outline-none focus:border-blue-500',
         'placeholder': 'Фотка',
+        'required': False
     }))
 
     class Meta:
         model = Users
-        fields = ('first_name', 'username', 'email', 'image')
+        fields = ('first_name', 'last_name', 'phone_number', 'username', 'email', 'image')

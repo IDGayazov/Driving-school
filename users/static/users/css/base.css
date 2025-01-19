@@ -1,0 +1,67 @@
+/* Стили для шапки сайта */
+body{
+    margin: 0;
+    padding: 0;
+}
+
+.site-header {
+    background-color: #007bff;
+    padding: 15px 0;
+    color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.site-header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1700px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.site-header .logo-link {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.site-header .navigation {
+    display: flex;
+}
+
+.site-header .nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 15px;
+}
+
+.site-header .nav-list li {
+    display: inline-block;
+}
+
+.site-header .nav-list a {
+    text-decoration: none;
+    color: white;
+    font-size: 1rem;
+    transition: color 0.3s;
+}
+
+.site-header .nav-list a:hover {
+    color: #ffdd57;
+}
+
+.site-footer {
+    margin-top: 70vh;
+    background-color: red;
+    width: 100%;
+    height: 30px;
+}
+
+.footer{
+    margin-top: auto;
+}
