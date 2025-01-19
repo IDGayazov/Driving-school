@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Авторизация</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'users/style.css' %}">
+</head>
+<body>
+    <div class="login-container">
+        <form class="login-form" action="#" method="POST">
+            {% csrf_token %}
+            <h2>Вход в систему</h2>
+            
+            <!-- Логин -->
+            <div class="input-group">
+                <label for="{{ form.username.id_for_label }}">Логин</label>
+                {{ form.username }}
+                {% if form.username.errors %}
+                    <ul class="error-list">
+                        {% for error in form.username.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <!-- Пароль -->
+            <div class="input-group">
+                <label for="{{ form.password.id_for_label }}">Пароль</label>
+                {{ form.password }}
+                {% if form.password.errors %}
+                    <ul class="error-list">
+                        {% for error in form.password.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <button type="submit" class="login-btn">Войти</button>
+
+            <div class="signup-link">
+                <p>Нет аккаунта? <a href="{% url 'users:registration' %}">Зарегистрироваться</a></p>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

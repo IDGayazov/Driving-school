@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class AutoSchoolConfig(AppConfig):
+class UsersConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'auto_school'
+    name = 'users'
