@@ -1,14 +1,12 @@
-{% extends 'users/base.html' %}
-
-{% load static %}
-<link rel="stylesheet" href="{% static 'users/css/profile.css' %}">
+{% extends 'base.html' %}
 
 {% block content %}
     <div class="edit-profile-container">
-        <h2 class="edit-profile-title">Редактировать профиль</h2>
 
         <form class="login-form" action="{% url 'users:edit_profile' pk=user.pk %}" enctype="multipart/form-data" method="POST">
             {% csrf_token %}
+
+            <h2 class="edit-profile-title">Редактировать профиль</h2>
 
             <!-- Логин -->
             <div class="input-group">

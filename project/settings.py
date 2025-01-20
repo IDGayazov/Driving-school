@@ -36,6 +36,7 @@ LOGOUT_REDIRECT_URL = "/login"
 
 INSTALLED_APPS = [
     "users.apps.UsersConfig",
+    "main.apps.MainConfig",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -59,7 +60,9 @@ ROOT_URLCONF = 'project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -135,7 +138,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'users.Users'
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
 LOGIN_URL = '/users/login/'
+LOGOUT_REDIRECT_URL = '/' 
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

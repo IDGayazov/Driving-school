@@ -1,11 +1,19 @@
 /* Стили для шапки сайта */
-body{
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #F4F7FB;
+    color: #333;
 }
 
 .site-header {
-    background-color: #007bff;
+    background-color: #1E3A8A;
     padding: 15px 0;
     color: white;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -45,6 +53,9 @@ body{
 }
 
 .site-header .nav-list a {
+    color: #FFFFFF;
+    text-decoration: none;
+    font-weight: bold;
     text-decoration: none;
     color: white;
     font-size: 1rem;
@@ -55,13 +66,21 @@ body{
     color: #ffdd57;
 }
 
-.site-footer {
-    margin-top: 70vh;
-    background-color: red;
-    width: 100%;
-    height: 30px;
+/* Футер */
+footer {
+    background-color: #1E3A8A;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
 }
-
-.footer{
-    margin-top: auto;
+footer .social-links {
+    margin-top: 10px;
+}
+footer .social-links a {
+    color: #fff;
+    margin-left: 15px;
+    text-decoration: none;
+}
+footer .social-links a:hover {
+    text-decoration: underline;
 }

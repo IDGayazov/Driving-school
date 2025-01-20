@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Автошкола{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'users/css/profile.css' %}">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <div class="logo">
+                <a href="{% url 'main:home' %}" class="logo-link">Автошкола</a>
+            </div>
+            <nav class="navigation">
+                <ul class="nav-list">
+                    <li><a href="{% url 'main:home' %}">Главная</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'users:profile' pk=user.pk %}">Профиль</a></li>
+                        <li><a href="#">Курсы</a></li>
+                        <li><a href="#">Инструкторы</a></li>
+                        <li><a href="#">Контакты</a></li>
+                        <form id="logout-form" action="{% url 'users:logout' %}" method="post" style="display: none;">
+                            {% csrf_token %}
+                            <button type="submit">Выйти</button>
+                        </form>
+                        
+                        <a href="#" onclick="document.getElementById('logout-form').submit();">Выйти</a>
+                    {% else %}
+                        <li><a href="#">Курсы</a></li>
+                        <li><a href="#">Инструкторы</a></li>
+                        <li><a href="#">Контакты</a></li>
+                        <li><a href="{% url 'users:login' %}">Вход</a></li>
+                        <li><a href="{% url 'users:registration' %}">Регистрация</a></li>
+                    {% endif %}
+
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    {% block content %}{% endblock %}
+
+    <!-- Футер -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Автошкола | Все права защищены</p>
+            <div class="social-links">
+                <a href="#">Facebook</a>
+                <a href="#">Instagram</a>
+                <a href="#">VK</a>
+            </div>
+        </div>
+    </footer>
+
+  </body>
