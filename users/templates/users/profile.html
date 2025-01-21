@@ -1,13 +1,11 @@
-{% extends 'users/base.html' %}
+{% extends 'base.html' %}
 
-{% load static %}
-<link rel="stylesheet" href="{% static 'users/css/profile.css' %}">
+{% block title %}Профиль{% endblock %}
 
 {% block content %}
     <div class="profile-container">
-        <h2 class="profile-title">Мой профиль</h2>
-
         <div class="profile-info">
+            <h2 class="profile-title">Мой профиль</h2>
             {% if user.image %}
                 <img style="display: inline-block;
                             border-radius: 50%;
@@ -38,10 +36,9 @@
                 <span class="profile-label">Телефон:</span>
                 <span class="profile-value">{{ user.phone_number }}</span>
             </div>
-        </div>
-
-        <div class="profile-actions">
-            <a href="{% url 'users:edit_profile' pk=user.pk %}" class="edit-btn">Редактировать профиль</a>
+            <div class="profile-actions">
+                <a href="{% url 'users:edit_profile' pk=user.pk %}" class="edit-btn">Редактировать профиль</a>
+            </div>
         </div>
     </div>
 {% endblock %}

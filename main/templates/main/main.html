@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Главная страница{% endblock %}
+
+{% block content %}
+    <!-- Главная секция -->
+    <section class="hero">
+        <div class="container">
+            <h2>Получите права с нами!</h2>
+            <p>Профессиональное обучение, опытные инструктора, комфортные условия.</p>
+            <a href="#" class="btn">Записаться на курс</a>
+        </div>
+    </section>
+
+    <!-- О нас -->
+    <section class="about">
+        <div class="container">
+            <h2>О нас</h2>
+            <p>Мы предлагаем качественное обучение в автошколе с лучшими инструкторами.</p>
+            <div class="spacer" style="height: 10px;"></div>
+            <div class="features">
+                <div class="feature">
+                    <h3>Опыт</h3>
+                    <p>10 лет обучения и более 5000 довольных студентов.</p>
+                </div>
+                <div class="feature">
+                    <h3>Квалификация</h3>
+                    <p>Наши инструктора проходят постоянные курсы повышения квалификации.</p>
+                </div>
+                <div class="feature">
+                    <h3>Доступность</h3>
+                    <p>Доступные цены и гибкая система оплаты.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Курсы -->
+    <section class="courses">
+        <div class="container">
+            <h2>Наши курсы</h2>
+            <div class="courses-grid">
+                {% for category in categories_list %}
+                    <div class="course-card">
+                        <h3>{{category.name}}</h3>
+                        <p>{{category.title}}</p>
+                        <a href="#" class="btn">Записаться</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

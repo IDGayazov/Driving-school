@@ -1,0 +1,102 @@
+/* Общие стили */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #F4F7FB;
+    color: #333;
+}
+
+/* Главная секция */
+.hero {
+    background-color: #34D399;
+    padding: 60px 0;
+    text-align: center;
+    color: #fff;
+}
+.hero h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+.hero p {
+    font-size: 20px;
+    margin-bottom: 30px;
+}
+.hero .btn {
+    background-color: #1E3A8A;
+    color: #fff;
+    padding: 15px 30px;
+    text-decoration: none;
+    font-size: 18px;
+    border-radius: 5px;
+}
+
+/* Секция "О нас" */
+.about {
+    padding: 60px 0;
+    text-align: center;
+}
+.about h2 {
+    font-size: 36px;
+    margin-bottom: 30px;
+}
+.features {
+    display: flex;
+    justify-content: space-around;
+}
+.feature {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 30%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.feature h3 {
+    color: #34D399;
+}
+
+/* Курсы */
+.courses {
+    background-color: #fff;
+    padding: 60px 0;
+}
+.courses h2 {
+    text-align: center;
+    font-size: 36px;
+    margin-bottom: 40px;
+}
+.courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 30px;
+    padding: 0 20px;
+}
+.course-card {
+    background-color: #1E3A8A;
+    color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+.course-card h3 {
+    margin-bottom: 10px;
+}
+.course-card p {
+    margin-bottom: 20px;
+}
+.course-card .btn {
+    background-color: #34D399;
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+.course-card:hover {
+    transform: translateY(-5px);
+}
