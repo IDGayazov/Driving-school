@@ -17,6 +17,7 @@
         <div class="container">
             <h2>О нас</h2>
             <p>Мы предлагаем качественное обучение в автошколе с лучшими инструкторами.</p>
+            <div class="spacer" style="height: 10px;"></div>
             <div class="features">
                 <div class="feature">
                     <h3>Опыт</h3>
@@ -39,42 +40,13 @@
         <div class="container">
             <h2>Наши курсы</h2>
             <div class="courses-grid">
-                <div class="course-card">
-                    <h3>Курс "В"</h3>
-                    <p>Категория B — легковые автомобили.</p>
-                    <p>Цена: 20,000 руб.</p>
-                    <a href="#" class="btn">Записаться</a>
-                </div>
-                <div class="course-card">
-                    <h3>Курс "А"</h3>
-                    <p>Категория A — мотоциклы.</p>
-                    <p>Цена: 15,000 руб.</p>
-                    <a href="#" class="btn">Записаться</a>
-                </div>
-                <div class="course-card">
-                    <h3>Курс "C"</h3>
-                    <p>Категория C — грузовые автомобили.</p>
-                    <p>Цена: 25,000 руб.</p>
-                    <a href="#" class="btn">Записаться</a>
-                </div>
-                <div class="course-card">
-                    <h3>Курс "D"</h3>
-                    <p>Категория D — автобусы.</p>
-                    <p>Цена: 30,000 руб.</p>
-                    <a href="#" class="btn">Записаться</a>
-                </div>
-                <div class="course-card">
-                    <h3>Курс "Е"</h3>
-                    <p>Категория E — прицепы и полуприцепы.</p>
-                    <p>Цена: 18,000 руб.</p>
-                    <a href="#" class="btn">Записаться</a>
-                </div>
-                <div class="course-card">
-                    <h3>Курс "А1"</h3>
-                    <p>Категория A1 — мопеды и легкие мотоциклы.</p>
-                    <p>Цена: 12,000 руб.</p>
-                    <a href="#" class="btn">Записаться</a>
-                </div>
+                {% for category in categories_list %}
+                    <div class="course-card">
+                        <h3>{{category.name}}</h3>
+                        <p>{{category.title}}</p>
+                        <a href="#" class="btn">Записаться</a>
+                    </div>
+                {% endfor %}
             </div>
         </div>
     </section>

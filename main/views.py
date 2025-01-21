@@ -1,6 +1,10 @@
 from django.shortcuts import render
 
+from main.models import Category
 # Create your views here.
 
 def home(request):
-    return render(request, 'main/main.html')
+    context = {
+        "categories_list": Category.objects.get_queryset()
+    }
+    return render(request, 'main/main.html', context)
