@@ -1,7 +1,6 @@
 from django.shortcuts import render
 
 from main.models import Category
-# Create your views here.
 
 def home(request):
     context = {
