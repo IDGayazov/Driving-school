@@ -1,0 +1,28 @@
+<!-- lesson_list.html -->
+<h1>Записи на занятия</h1>
+<div class="lesson-cards">
+    {% for registration in registrations %}
+        <div class="lesson-card">
+            <h2>Занятие {{ registration.date }}</h2>
+            <p><strong>Инструктор:</strong> {{ registration.instructor.get_full_name }}</p>
+            <p><strong>Статус:</strong> {{ 'Занято' if registration.is_booked else 'Свободно' }}</p>
+
+            {% if user.is_authenticated %}
+                {% if user.is_student %}
+                    {% if not registration.is_booked %}
+                        <a href="{% url 'enroll_lesson' registration.id %}" class="btn btn-primary">Записаться на занятие</a>
+                    {% else %}
+                        <p>Вы уже записаны на это занятие.</p>
+                    {% endif %}
+                {% else %}
+                    <p>Запись на занятие доступна только для студентов.</p>
+                {% endif %}
+            {% else %}
+                <p>Войдите в систему, чтобы записаться на занятие.</p>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+
+<a href="{% url 'lesson_registration_create' %}">Создать новое занятие</a>
+

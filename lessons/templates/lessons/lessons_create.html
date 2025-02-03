@@ -1,0 +1,8 @@
+<!-- lessons_create.html -->
+<h1>Создать новое занятие</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Создать</button>
+</form>
+<a href="{% url 'lesson_registration_list' %}">Назад к списку занятий</a>
