@@ -1,0 +1,117 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+    .dcontainer {
+        width: 80%;
+        height: 81dvh;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    .dcourse-info {
+        margin-bottom: 40px;
+    }
+
+    .dcourse-info h2 {
+        margin-bottom: 10px;
+    }
+
+    .dcourse-info p {
+        font-size: 18px;
+        line-height: 1.5;
+    }
+
+    .dcourse-list {
+        margin-top: 40px;
+    }
+
+    .dcourse-card {
+        display: grid;
+        grid-template-columns: 0.5fr 1fr 1fr 1fr 0.5fr;
+        gap: 20px;
+        background-color: #1948ca;
+        color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .dcourse-card h3 {
+        margin-bottom: 10px;
+    }
+
+    .dcourse-card p {
+        margin-bottom: 15px;
+    }
+
+    .dbtn {
+        background-color: #35da9e;
+        color: #ffffff;
+        padding: 15px;
+        max-height: 90%;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+    .dSbtn:hover {
+        background-color: #28a745;
+    }
+</style>
+
+<div class="dcontainer">
+    <!-- Информация о выбранном курсе -->
+    <div class="dcourse-info">
+        <h2>{{ category.name }}</h2>
+        <p>{{ category.description | linebreaksbr }}</p>
+    </div>
+
+    <!-- Список других доступных курсов -->
+    <div class="dcourse-list">
+        <h2>Доступные курсы</h2>
+        {% if enrolled %}
+            {% for course in courses %}
+                <div class="dcourse-card">
+                <h3>{{ course.name }}</h3>
+                <p><strong>Преподаватель:</strong> {{ course.created_by }}</p>
+                <p><strong>Дата начала:</strong> {{ course.start_date }}</p>
+                <p><strong>Доступно мест:</strong> {{ course.places_count }}</p>
+
+                {% if course.id in enrolled %}
+                    <p>Вы записаны на этот курс</p>
+                {% else %}
+                    <p>Запись недоступна</p>
+                {% endif %}
+                
+                </div>
+            {% endfor %}
+        {% else %}
+            {% for course in courses %}
+                <div class="dcourse-card">
+                <h3>{{ course.name }}</h3>
+                <p><strong>Преподаватель:</strong> {{ course.created_by }}</p>
+                <p><strong>Дата начала:</strong> {{ course.start_date }}</p>
+                <p><strong>Доступно мест:</strong> {{ course.places_count }}</p>
+
+                <form action="{% url 'main:enroll_in_course' course.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="dbtn">Записаться</button>
+                </form>
+                
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
