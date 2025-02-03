@@ -58,7 +58,7 @@
     .dbtn {
         background-color: #35da9e;
         color: #ffffff;
-        padding: 8px;
+        padding: 15px;
         max-height: 90%;
         text-decoration: none;
         border-radius: 5px;
@@ -79,6 +79,7 @@
     <!-- Список других доступных курсов -->
     <div class="dcourse-list">
         <h2>Доступные курсы</h2>
+        {% if enrolled %}
             {% for course in courses %}
                 <div class="dcourse-card">
                 <h3>{{ course.name }}</h3>
@@ -86,9 +87,30 @@
                 <p><strong>Дата начала:</strong> {{ course.start_date }}</p>
                 <p><strong>Доступно мест:</strong> {{ course.places_count }}</p>
 
-                <a href="#" class="dbtn">Записаться</a>
-            </div>
-        {% endfor %}
+                {% if course.id in enrolled %}
+                    <p>Вы записаны на этот курс</p>
+                {% else %}
+                    <p>Запись недоступна</p>
+                {% endif %}
+                
+                </div>
+            {% endfor %}
+        {% else %}
+            {% for course in courses %}
+                <div class="dcourse-card">
+                <h3>{{ course.name }}</h3>
+                <p><strong>Преподаватель:</strong> {{ course.created_by }}</p>
+                <p><strong>Дата начала:</strong> {{ course.start_date }}</p>
+                <p><strong>Доступно мест:</strong> {{ course.places_count }}</p>
+
+                <form action="{% url 'main:enroll_in_course' course.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="dbtn">Записаться</button>
+                </form>
+                
+                </div>
+            {% endfor %}
+        {% endif %}
     </div>
 </div>
 

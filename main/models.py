@@ -28,6 +28,7 @@ class Course(models.Model):
     def __str__(self):
         return self.name
     
+    
 class Enrollment(models.Model):
     student = models.ForeignKey(Users, on_delete=models.CASCADE) 
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
