@@ -26,7 +26,7 @@ def lesson_detail(request, pk):
 
 @login_required
 def lessons_create(request):
-    if not (request.user.is_instructor or request.user.is_admin):
+    if not (request.user.is_instructor() or request.user.is_admin()):
         raise PermissionDenied
 
     if request.method == 'POST':

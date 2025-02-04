@@ -76,10 +76,6 @@ h1 {
     text-align: center;
 }
 
-a:hover {
-    background-color: #218838;
-}
-
 .lesson-card .status[data-status="Занято"] {
     color: #dc3545;
 }
