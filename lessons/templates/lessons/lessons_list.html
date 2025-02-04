@@ -1,3 +1,8 @@
+{% extends 'base.html' %}
+
+{% block title %}Практика{% endblock %}
+
+{% block content %}
 <h1>Записи на занятия</h1>
 <div class="lesson-cards">
     {% for registration in registrations %}
@@ -26,9 +31,7 @@
     {% endfor %}
 </div>
 
-<a href="create">Создать новое занятие</a>
-
-<meta name="csrf-token" content="{{ csrf_token }}">  <!-- Добавьте CSRF-токен -->
+<meta name="csrf-token" content="{{ csrf_token }}">
 
 <script>
 function enrollLesson(lessonId) {
@@ -57,3 +60,4 @@ function enrollLesson(lessonId) {
     });
 }
 </script>
+{% endblock %}
