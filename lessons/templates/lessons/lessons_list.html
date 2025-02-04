@@ -3,7 +3,7 @@
 <div class="lesson-cards">
     {% for registration in registrations %}
         <div class="lesson-card">
-            <h2>Занятие {{ registration.date }}</h2>
+            <h2>Занятие {{registration.date }}</h2>
             <p><strong>Инструктор:</strong> {{ registration.instructor.get_full_name }}</p>
             <p><strong>Статус:</strong> {{ 'Занято' if registration.is_booked else 'Свободно' }}</p>
 
@@ -24,5 +24,5 @@
     {% endfor %}
 </div>
 
-<a href="{% url 'lesson_registration_create' %}">Создать новое занятие</a>
+<a href="lessons/lessons_create">Создать новое занятие</a>
 

@@ -7,7 +7,7 @@ from .models import LessonEnrollment
 
 def lessons_list(request):
     registrations = LessonEnrollment.objects.all()
-    return render(request, 'lesson_list.html', {'registrations': registrations})
+    return render(request, 'lessons/lessons_list.html', {'registrations': registrations})
 
 def lesson_detail(request, pk):
     lesson = get_object_or_404(LessonEnrollment, pk=pk)
@@ -25,10 +25,10 @@ def lessons_create(request):
         form = LessonEnrollmentForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('lesson_list')
+            return redirect('lessons_list')
     else:
         form = LessonEnrollmentForm()
-    return render(request, 'lessons_create.html', {'form': form})
+    return render(request, 'lessons/lessons_create.html', {'form': form})
 
 @login_required
 def enroll_lesson(request, lesson_id):
@@ -38,4 +38,4 @@ def enroll_lesson(request, lesson_id):
             lesson.student = request.user
             lesson.is_booked = True
             lesson.save()
-    return redirect('lesson_list')
+    return redirect('lessons_list')
