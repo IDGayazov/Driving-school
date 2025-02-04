@@ -1,18 +1,20 @@
-<!-- lesson_list.html -->
 <h1>Записи на занятия</h1>
 <div class="lesson-cards">
     {% for registration in registrations %}
-        <div class="lesson-card">
-            <h2>Занятие {{registration.date }}</h2>
+        <div class="lesson-card" id="lesson-{{ registration.id }}">
+            <h2>Занятие {{ registration.date }}</h2>
             <p><strong>Инструктор:</strong> {{ registration.instructor.get_full_name }}</p>
-            <p><strong>Статус:</strong> {{ 'Занято' if registration.is_booked else 'Свободно' }}</p>
-
+            <p><strong>Статус:</strong> <span class="status">{{ registration.is_booked|yesno:"Занято,Свободно" }}</span></p>
             {% if user.is_authenticated %}
                 {% if user.is_student %}
                     {% if not registration.is_booked %}
-                        <a href="{% url 'enroll_lesson' registration.id %}" class="btn btn-primary">Записаться на занятие</a>
+                        <button onclick="enrollLesson({{ registration.id }})" class="btn btn-primary">Записаться на занятие</button>
                     {% else %}
-                        <p>Вы уже записаны на это занятие.</p>
+                        {% if registration.student.id == user.id %}
+                            <p>Вы уже записаны на это занятие.</p>
+                        {% else %}
+                            <p>Это занятие уже занято другим студентом.</p>
+                        {% endif %}
                     {% endif %}
                 {% else %}
                     <p>Запись на занятие доступна только для студентов.</p>
@@ -24,5 +26,34 @@
     {% endfor %}
 </div>
 
-<a href="lessons/lessons_create">Создать новое занятие</a>
+<a href="create">Создать новое занятие</a>
 
+<meta name="csrf-token" content="{{ csrf_token }}">  <!-- Добавьте CSRF-токен -->
+
+<script>
+function enrollLesson(lessonId) {
+    const csrfToken = document.querySelector('[name=csrf-token]').content;  // Извлеките CSRF-токен
+    fetch(`/lessons/enrollLesson/${lessonId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrfToken,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({})
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const lessonCard = document.getElementById(`lesson-${lessonId}`);
+            lessonCard.querySelector('.status').textContent = 'Занято';
+            lessonCard.querySelector('button').remove();
+            lessonCard.insertAdjacentHTML('beforeend', '<p>Вы уже записаны на это занятие.</p>');
+        } else {
+            alert('Ошибка при записи на занятие.');
+        }
+    })
+    .catch(error => {
+        console.error('Ошибка:', error);
+    });
+}
+</script>

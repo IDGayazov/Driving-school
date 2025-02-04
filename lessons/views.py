@@ -1,9 +1,14 @@
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render, redirect
+from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
+
 
 from .forms import LessonEnrollmentForm
 from .models import LessonEnrollment
+import logging
+
+logger = logging.getLogger(__name__)
 
 def lessons_list(request):
     registrations = LessonEnrollment.objects.all()
@@ -21,21 +26,25 @@ def lesson_detail(request, pk):
 
 @login_required
 def lessons_create(request):
+    if not (request.user.is_instructor or request.user.is_admin):
+        raise PermissionDenied
+
     if request.method == 'POST':
         form = LessonEnrollmentForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('lessons_list')
+            return redirect('lessons:lessons_list')
     else:
         form = LessonEnrollmentForm()
     return render(request, 'lessons/lessons_create.html', {'form': form})
 
 @login_required
 def enroll_lesson(request, lesson_id):
+    logger.info(f"enroll_lesson called with lesson_id: {lesson_id} by user: {request.user}")
     lesson = get_object_or_404(LessonEnrollment, id=lesson_id)
     if request.user.is_student():
         if not lesson.student:
             lesson.student = request.user
             lesson.is_booked = True
             lesson.save()
-    return redirect('lessons_list')
+    return redirect('lessons/lessons_list')

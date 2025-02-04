@@ -1,4 +1,16 @@
-<!-- lessons_create.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+{% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
 <h1>Создать новое занятие</h1>
 <form method="post">
     {% csrf_token %}
@@ -6,3 +18,5 @@
     <button type="submit">Создать</button>
 </form>
 <a href="{% url 'lessons:lessons_list' %}">Назад к списку занятий</a>
+
+{% endblock %}
