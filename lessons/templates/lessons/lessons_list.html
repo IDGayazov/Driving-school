@@ -9,6 +9,8 @@
         <div class="lesson-card" id="lesson-{{ registration.id }}">
             <h2>Занятие {{ registration.date }}</h2>
             <p><strong>Инструктор:</strong> {{ registration.instructor.get_full_name }}</p>
+            <p><strong>Марка машины:</strong> {{ registration.car_brand }}</p>
+            <p><strong>Гос номер машины:</strong> {{ registration.car_number }}</p>
             <p><strong>Статус:</strong> <span class="status">{{ registration.is_booked|yesno:"Занято,Свободно" }}</span></p>
             {% if user.is_authenticated %}
                 {% if user.is_student %}

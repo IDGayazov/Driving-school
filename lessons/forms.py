@@ -5,7 +5,7 @@ from users.models import Users
 class LessonEnrollmentForm(forms.ModelForm):
     class Meta:
         model = LessonEnrollment
-        fields = ['date', 'instructor']
+        fields = ['date', 'instructor', 'car_brand', 'car_number']
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date'}),
         }
