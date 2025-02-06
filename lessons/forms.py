@@ -13,14 +13,16 @@ class LessonEnrollmentForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user', None)  # Исправлено: передаем объект пользователя, а не класс
+        self.user = kwargs.pop('user', None)
         super(LessonEnrollmentForm, self).__init__(*args, **kwargs)
 
-        if self.user and self.user.is_instructor:
+        self.fields['instructor'].queryset = Users.objects.filter(role='instructor')
+
+        if self.user and self.user.is_instructor():
             self.fields['instructor'].widget = forms.HiddenInput()
             self.fields['instructor'].initial = self.user.id
-        elif self.user and self.user.is_admin:
-            pass  # Для администраторов поле instructor остается видимым
+        elif self.user and self.user.is_admin():
+            pass
 
     def clean_date(self):
         """
