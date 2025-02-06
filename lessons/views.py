@@ -1,7 +1,7 @@
-from django.shortcuts import get_object_or_404
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 
 from users.models import Users
 from .forms import LessonEnrollmentForm
@@ -77,3 +77,13 @@ def cancel_enrollment(request, lesson_id):
         lesson.is_booked = False
         lesson.save()
     return redirect('lessons:lessons_list')
+
+@login_required
+def delete_lesson(request, lesson_id):
+    lesson = get_object_or_404(LessonEnrollment, id=lesson_id)
+
+    if not (request.user.is_admin or (request.user.is_instructor and lesson.instructor == request.user)):
+        return JsonResponse({'success': False, 'error': 'У вас нет прав на удаление этого занятия.'})
+
+    lesson.delete()
+    return JsonResponse({'success': True})
