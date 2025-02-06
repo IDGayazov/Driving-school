@@ -28,7 +28,7 @@
     {% for registration in registrations %}
         <div class="lesson-card" id="lesson-{{ registration.id }}">
             <h2>Занятие {{ registration.date }}</h2>
-            <p><strong>Инструктор:</strong> {{ registration.instructor}}</p>
+            <p><strong>Инструктор:</strong> {{ registration.instructor }}</p>
             <p><strong>Марка машины:</strong> {{ registration.car_brand }}</p>
             <p><strong>Гос номер машины:</strong> {{ registration.car_number }}</p>
             <p><strong>Статус:</strong> <span class="status">{{ registration.is_booked|yesno:"Занято,Свободно" }}</span></p>
@@ -38,7 +38,7 @@
                         <button onclick="enrollLesson({{ registration.id }})" class="btn btn-primary">Записаться на занятие</button>
                     {% else %}
                         {% if registration.student.id == user.id %}
-                            <p>Вы уже записаны на это занятие.</p>
+                            <button onclick="cancelEnrollment({{ registration.id }})" class="btn btn-danger">Отменить запись</button>
                         {% else %}
                             <p>Это занятие уже занято другим студентом.</p>
                         {% endif %}
@@ -72,9 +72,35 @@ function enrollLesson(lessonId) {
             const lessonCard = document.getElementById(`lesson-${lessonId}`);
             lessonCard.querySelector('.status').textContent = 'Занято';
             lessonCard.querySelector('button').remove();
-            lessonCard.insertAdjacentHTML('beforeend', '<p>Вы уже записаны на это занятие.</p>');
+            lessonCard.insertAdjacentHTML('beforeend', '<button onclick="cancelEnrollment({{ registration.id }})" class="btn btn-danger">Отменить запись</button>');
         } else {
             alert('Ошибка при записи на занятие.');
+        }
+    })
+    .catch(error => {
+        console.error('Ошибка:', error);
+    });
+}
+
+function cancelEnrollment(lessonId) {
+    const csrfToken = document.querySelector('[name=csrf-token]').content;  // Извлеките CSRF-токен
+    fetch(`/lessons/cancelEnrollment/${lessonId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrfToken,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({})
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const lessonCard = document.getElementById(`lesson-${lessonId}`);
+            lessonCard.querySelector('.status').textContent = 'Свободно';
+            lessonCard.querySelector('button').remove();
+            lessonCard.insertAdjacentHTML('beforeend', '<button onclick="enrollLesson({{ registration.id }})" class="btn btn-primary">Записаться на занятие</button>');
+        } else {
+            alert('Ошибка при отмене записи.');
         }
     })
     .catch(error => {

@@ -68,3 +68,12 @@ def enroll_lesson(request, lesson_id):
             lesson.is_booked = True
             lesson.save()
     return redirect('lessons/lessons_list')
+
+@login_required
+def cancel_enrollment(request, lesson_id):
+    lesson = get_object_or_404(LessonEnrollment, id=lesson_id)
+    if request.user.is_student() and lesson.student == request.user:
+        lesson.student = None
+        lesson.is_booked = False
+        lesson.save()
+    return redirect('lessons:lessons_list')
