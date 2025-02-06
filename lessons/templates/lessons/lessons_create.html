@@ -15,6 +15,8 @@
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
+    <p>Пользователь: {{ user.username }}</p>
+    <p>Роль: {{ user.role }}</p>
     <button type="submit">Создать</button>
 </form>
 <a href="{% url 'lessons:lessons_list' %}">Назад к списку занятий</a>

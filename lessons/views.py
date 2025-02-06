@@ -26,21 +26,21 @@ def lesson_detail(request, pk):
 
 @login_required
 def lessons_create(request):
-    if not (request.user.is_instructor() or request.user.is_admin()):
+    if request.user.is_student():
         raise PermissionDenied
 
     if request.method == 'POST':
-        form = LessonEnrollmentForm(request.POST)
+        form = LessonEnrollmentForm(request.POST, user=request.user)
         if form.is_valid():
             form.save()
             return redirect('lessons:lessons_list')
     else:
-        form = LessonEnrollmentForm()
+        form = LessonEnrollmentForm(user=request.user)
+
     return render(request, 'lessons/lessons_create.html', {'form': form})
 
 @login_required
 def enroll_lesson(request, lesson_id):
-    logger.info(f"enroll_lesson called with lesson_id: {lesson_id} by user: {request.user}")
     lesson = get_object_or_404(LessonEnrollment, id=lesson_id)
     if request.user.is_student():
         if not lesson.student:
