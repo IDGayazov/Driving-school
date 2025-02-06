@@ -4,11 +4,31 @@
 
 {% block content %}
 <h1>Записи на занятия</h1>
+
+<!-- Форма для сортировки и фильтрации -->
+<div class="filters">
+    <form method="get" action="{% url 'lessons:lessons_list' %}">
+        <label for="sort_by">Сортировать по дате:</label>
+        <select name="sort_by" id="sort_by" onchange="this.form.submit()">
+            <option value="date_asc" {% if sort_by == 'date_asc' %}selected{% endif %}>По возрастанию</option>
+            <option value="date_desc" {% if sort_by == 'date_desc' %}selected{% endif %}>По убыванию</option>
+        </select>
+
+        <label for="filter_by">Фильтровать по статусу:</label>
+        <select name="filter_by" id="filter_by" onchange="this.form.submit()">
+            <option value="">Все</option>
+            <option value="available" {% if filter_by == 'available' %}selected{% endif %}>Свободно</option>
+            <option value="booked" {% if filter_by == 'booked' %}selected{% endif %}>Занято</option>
+        </select>
+    </form>
+</div>
+
+<!-- Список занятий -->
 <div class="lesson-cards">
     {% for registration in registrations %}
         <div class="lesson-card" id="lesson-{{ registration.id }}">
             <h2>Занятие {{ registration.date }}</h2>
-            <p><strong>Инструктор:</strong> {{ registration.instructor.get_full_name }}</p>
+            <p><strong>Инструктор:</strong> {{ registration.instructor}}</p>
             <p><strong>Марка машины:</strong> {{ registration.car_brand }}</p>
             <p><strong>Гос номер машины:</strong> {{ registration.car_number }}</p>
             <p><strong>Статус:</strong> <span class="status">{{ registration.is_booked|yesno:"Занято,Свободно" }}</span></p>

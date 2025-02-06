@@ -83,3 +83,23 @@ h1 {
 .lesson-card .status[data-status="Свободно"] {
     color: #28a745;
 }
+
+.filters {
+    margin-bottom: 20px;
+}
+
+.filters form {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.filters label {
+    font-weight: bold;
+}
+
+.filters select {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
