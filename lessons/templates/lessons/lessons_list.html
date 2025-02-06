@@ -31,7 +31,7 @@
             <p><strong>Инструктор:</strong> {{ registration.instructor }}</p>
             <p><strong>Марка машины:</strong> {{ registration.car_brand }}</p>
             <p><strong>Гос номер машины:</strong> {{ registration.car_number }}</p>
-            <p><strong>Статус:</strong> <span class="status">{{ registration.is_booked|yesno:"Занято,Свободно" }}</span></p>
+            <p><strong>Статус:</strong> <span class="status" data-status="{{ registration.is_booked|yesno:'Занято,Свободно' }}">{{ registration.is_booked|yesno:"Занято,Свободно" }}</span></p>
             {% if user.is_authenticated %}
                 {% if user.is_student %}
                     {% if not registration.is_booked %}
@@ -40,14 +40,14 @@
                         {% if registration.student.id == user.id %}
                             <button onclick="cancelEnrollment({{ registration.id }})" class="btn btn-danger">Отменить запись</button>
                         {% else %}
-                            <p>Это занятие уже занято другим студентом.</p>
+                            <p class="message">Это занятие уже занято другим студентом.</p>
                         {% endif %}
                     {% endif %}
                 {% else %}
-                    <p>Запись на занятие доступна только для студентов.</p>
+                    <p class="message">Запись на занятие доступна только для студентов.</p>
                 {% endif %}
             {% else %}
-                <p>Войдите в систему, чтобы записаться на занятие.</p>
+                <p class="message">Войдите в систему, чтобы записаться на занятие.</p>
             {% endif %}
         </div>
     {% endfor %}
@@ -71,6 +71,7 @@ function enrollLesson(lessonId) {
         if (data.success) {
             const lessonCard = document.getElementById(`lesson-${lessonId}`);
             lessonCard.querySelector('.status').textContent = 'Занято';
+            lessonCard.querySelector('.status').setAttribute('data-status', 'Занято');
             lessonCard.querySelector('button').remove();
             lessonCard.insertAdjacentHTML('beforeend', '<button onclick="cancelEnrollment({{ registration.id }})" class="btn btn-danger">Отменить запись</button>');
         } else {
@@ -97,6 +98,7 @@ function cancelEnrollment(lessonId) {
         if (data.success) {
             const lessonCard = document.getElementById(`lesson-${lessonId}`);
             lessonCard.querySelector('.status').textContent = 'Свободно';
+            lessonCard.querySelector('.status').setAttribute('data-status', 'Свободно');
             lessonCard.querySelector('button').remove();
             lessonCard.insertAdjacentHTML('beforeend', '<button onclick="enrollLesson({{ registration.id }})" class="btn btn-primary">Записаться на занятие</button>');
         } else {

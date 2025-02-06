@@ -1,105 +1,277 @@
-
+/* Основные стили для страницы списка занятий */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #F4F7FB;
     margin: 0;
     padding: 20px;
 }
 
 h1 {
     text-align: center;
+    color: #1E3A8A;
+    margin-bottom: 30px;
+}
+
+/* Стили для фильтров */
+.filters {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.filters form {
+    display: inline-flex;
+    gap: 15px;
+    align-items: center;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.filters label {
+    font-weight: bold;
     color: #333;
 }
 
+.filters select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #333;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.filters select:hover {
+    border-color: #1E3A8A;
+}
+
+/* Стили для карточек занятий */
 .lesson-cards {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
-    justify-content: center;
+    padding: 0 20px;
 }
 
 .lesson-card {
     background-color: #fff;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    width: 300px;
-    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.lesson-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .lesson-card h2 {
     margin-top: 0;
-    color: #555;
+    color: #1E3A8A;
     font-size: 1.5em;
 }
 
 .lesson-card p {
     margin: 10px 0;
-    color: #666;
+    color: #555;
 }
 
 .lesson-card .status {
     font-weight: bold;
-    color: #333;
-}
-
-.lesson-card button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    position: absolute;
-    right: 20px;
-    bottom: 20px;
-    transition: background-color 0.3s ease;
-}
-
-.lesson-card button:hover {
-    background-color: #0056b3;
-}
-
-.lesson-card p {
-    color: #888;
-    font-style: italic;
-}
-
-.lessons-link {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 10px 15px;
-    background-color: #28a745;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    text-align: center;
 }
 
 .lesson-card .status[data-status="Занято"] {
-    color: #dc3545;
+    color: #EF4444; /* Красный для занятых занятий */
 }
 
 .lesson-card .status[data-status="Свободно"] {
-    color: #28a745;
+    color: #34D399; /* Зеленый для свободных занятий */
 }
 
-.filters {
+/* Стили для кнопок */
+.lesson-card .btn {
+    display: inline-block;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.lesson-card .btn-primary {
+    background-color: #1E3A8A;
+    color: #fff;
+}
+
+.lesson-card .btn-primary:hover {
+    background-color: #152C5B;
+}
+
+.lesson-card .btn-danger {
+    background-color: #EF4444;
+    color: #fff;
+}
+
+.lesson-card .btn-danger:hover {
+    background-color: #DC2626;
+}
+
+/* Стили для сообщений */
+.messages {
     margin-bottom: 20px;
 }
 
-.filters form {
+.alert {
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.alert-success {
+    background-color: #D1FAE5;
+    color: #065F46;
+    border: 1px solid #34D399;
+}
+
+.alert-error {
+    background-color: #FEE2E2;
+    color: #991B1B;
+    border: 1px solid #EF4444;
+}
+
+.alert-info {
+    background-color: #DBEAFE;
+    color: #1E40AF;
+    border: 1px solid #60A5FA;
+}
+
+/* Стили для текстовых сообщений */
+.lesson-card p.message {
+    color: #888;
+    font-style: italic;
+    margin: 10px 0;
+}
+
+/* Стили для страницы создания занятия */
+.create-lesson-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.create-lesson-container h1 {
+    font-size: 28px;
+    color: #1E3A8A;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.create-lesson-container form {
     display: flex;
-    gap: 10px;
-    align-items: center;
+    flex-direction: column;
+    gap: 15px;
 }
 
-.filters label {
+.create-lesson-container form p {
+    margin-bottom: 10px;
+}
+
+.create-lesson-container form label {
     font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
 }
 
-.filters select {
-    padding: 5px;
+.create-lesson-container form input[type="text"],
+.create-lesson-container form input[type="date"],
+.create-lesson-container form select {
+    width: 100%;
+    padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    font-size: 14px;
+    color: #333;
+}
+
+.create-lesson-container form button[type="submit"] {
+    background-color: #1E3A8A;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.create-lesson-container form button[type="submit"]:hover {
+    background-color: #152C5B;
+}
+
+.create-lesson-container a {
+    display: inline-block;
+    margin-top: 20px;
+    color: #1E3A8A;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s;
+}
+
+.create-lesson-container a:hover {
+    color: #152C5B;
+    text-decoration: underline;
+}
+
+/* Стили для сообщений */
+.messages {
+    margin-bottom: 20px;
+}
+
+.alert {
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.alert-success {
+    background-color: #D1FAE5;
+    color: #065F46;
+    border: 1px solid #34D399;
+}
+
+.alert-error {
+    background-color: #FEE2E2;
+    color: #991B1B;
+    border: 1px solid #EF4444;
+}
+
+.alert-info {
+    background-color: #DBEAFE;
+    color: #1E40AF;
+    border: 1px solid #60A5FA;
+}
+
+/* Стили для информации о пользователе */
+.user-info {
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #F3F4F6;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #333;
+}
+
+.user-info p {
+    margin: 0;
 }
