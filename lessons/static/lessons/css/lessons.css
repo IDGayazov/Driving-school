@@ -3,7 +3,7 @@ body {
     font-family: Arial, sans-serif;
     background-color: #F4F7FB;
     margin: 0;
-    padding: 20px;
+    /* padding: 20px; */
 }
 
 h1 {
@@ -45,6 +45,10 @@ h1 {
 
 .filters select:hover {
     border-color: #1E3A8A;
+}
+
+.icontainer{
+    min-height: 81dvh;
 }
 
 /* Стили для карточек занятий */

@@ -5,40 +5,104 @@
 {% block content %}
     <div class="profile-container">
         <div class="profile-info">
-            <h2 class="profile-title">Мой профиль</h2>
-            {% if user.image %}
+            {% if profile.image %}
                 <img style="display: inline-block;
                             border-radius: 50%;
                             overflow: hidden;
                             width: 300px;
                             height: 300px;" 
-                src="{{ user.image.url }}" alt="Фото пользователя" />
+                src="{{ profile.image.url }}" alt="Фото пользователя" />
             {% else %}
-                <p>Фото не выбрано</p>
+                {% load static %}
+                <img style="display: inline-block;
+                            border-radius: 50%;
+                            overflow: hidden;
+                            width: 300px;
+                            height: 300px;" 
+                src="{% static 'users/images/default_image.jpeg' %}" alt="Your Image">
+                            
             {% endif %}
             <div class="profile-item">
                 <span class="profile-label">Логин:</span>
-                <span class="profile-value">{{ user.username }}</span>
+                <span class="profile-value">{{ profile.username }}</span>
             </div>
             <div class="profile-item">
                 <span class="profile-label">Имя:</span>
-                <span class="profile-value">{{ user.first_name }}</span>
+                <span class="profile-value">{{ profile.first_name }}</span>
             </div>
             <div class="profile-item">
                 <span class="profile-label">Фамилия:</span>
-                <span class="profile-value">{{ user.last_name }}</span>
+                <span class="profile-value">{{ profile.last_name }}</span>
             </div>
             <div class="profile-item">
                 <span class="profile-label">Email:</span>
-                <span class="profile-value">{{ user.email }}</span>
+                <span class="profile-value">{{ profile.email }}</span>
             </div>
             <div class="profile-item">
                 <span class="profile-label">Телефон:</span>
-                <span class="profile-value">{{ user.phone_number }}</span>
+                <span class="profile-value">{{ profile.phone_number }}</span>
             </div>
-            <div class="profile-actions">
-                <a href="{% url 'users:edit_profile' pk=user.pk %}" class="edit-btn">Редактировать профиль</a>
-            </div>
+            {% if user.pk is profile.pk %}
+                <div class="profile-actions">
+                    <a href="{% url 'users:edit_profile' pk=profile.pk %}" class="edit-btn">Редактировать профиль</a>
+                </div>
+            {% endif %}
+        </div>
+        <div class="profile-courses">
+            {% if is_student %}
+            <h3>Записан на следующие курсы по теории:</h3>
+                {% if course %}
+                    <div class="profile-course-card">
+                        <h3>{{course.name}}</h3>
+                        <p>
+                            <strong>Преподаватель:</strong>
+                            <a style="color: white" href={% url 'users:profile' pk=course.created_by.id  %}>{{course.created_by}}</a>
+                        </p>
+                        <p><strong>Дата начала:</strong> {{course.start_date}}</p>
+                    </div>
+                {% endif %}
+                <h3>Записан на следующие курсы по практике:</h3>
+                {% for practice in practices %}
+                    <div class="profile-course-card">
+                        <h3>Вождение</h3>
+                        <p>
+                            <strong>Инструктор:</strong>
+                            <a style="color:white" href="{% url 'users:profile' pk=practice.instructor.id %}">{{practice.instructor}}</a>
+                        </p>
+                        <p><strong>Дата:</strong>  {{practice.date}}</p>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            {% if is_teacher %}
+                <h3>У вас следующие курсы:</h3>
+                {% for course, students in courses_with_students.items %}
+                    <h3>{{course.name}}</h3>
+                    <p><strong>Количество мест: </strong>{{course.places_count}}</p>
+                    <p><strong>Дата начала:</strong>{{course.start_date}}</p>
+                    <strong>Список участников:</strong>
+                    {% for student in students %}
+                        <div class="profile-course-card">
+                            <p>{{student.first_name}} {{student.last_name}}</p>
+                            <a style="color: white" href={% url 'users:profile' pk=student.id  %}>{{student.username}}</a>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            {% endif %}
+
+            {% if is_instructor %}
+                <h3>Инструктор по вождению у студентов:</h3>
+                {% for student in students %}
+                    <div class="profile-course-card">
+                        <p> {{student.first_name}} {{student.last_name}} <p>
+                        <a style="color:white" href="{% url 'users:profile' pk=student.id %}"><p>{{student.username}}</p></a>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            {% if is_admin %}
+                <p>Администратор</p>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

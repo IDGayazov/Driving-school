@@ -87,10 +87,12 @@
                 <p><strong>Дата начала:</strong> {{ course.start_date }}</p>
                 <p><strong>Доступно мест:</strong> {{ course.places_count }}</p>
 
-                {% if course.id in enrolled %}
-                    <p>Вы записаны на этот курс</p>
-                {% else %}
-                    <p>Запись недоступна</p>
+                {% if user.is_student %}
+                    {% if course.id in enrolled and course.places_count > 0 %}
+                        <p>Вы записаны на этот курс</p>
+                    {% else %}
+                        <p>Запись недоступна</p>
+                    {% endif %}
                 {% endif %}
                 
                 </div>
@@ -103,11 +105,12 @@
                 <p><strong>Дата начала:</strong> {{ course.start_date }}</p>
                 <p><strong>Доступно мест:</strong> {{ course.places_count }}</p>
 
-                <form action="{% url 'main:enroll_in_course' course.id %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="dbtn">Записаться</button>
-                </form>
-                
+                {% if user.is_student %}
+                    <form action="{% url 'main:enroll_in_course' course.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="dbtn">Записаться</button>
+                    </form>
+                {% endif %}
                 </div>
             {% endfor %}
         {% endif %}
