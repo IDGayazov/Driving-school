@@ -47,6 +47,10 @@ h1 {
     border-color: #1E3A8A;
 }
 
+.icontainer{
+    min-height: 81dvh;
+}
+
 /* Стили для карточек занятий */
 .lesson-cards {
     display: grid;

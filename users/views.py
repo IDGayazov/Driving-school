@@ -49,8 +49,15 @@ class UserProfileView(DetailView):
         if profile.is_student():
             context['is_student'] = True
             course_ids = profile.enrollment_set.values_list('course', flat=True)
+            
             if course_ids:
-                context['course'] = Course.objects.filter(id__in=course_ids)[0]    
+                context['course'] = Course.objects.filter(id__in=course_ids)[0]  
+
+            practice_ids = LessonEnrollment.objects.select_related('student').filter(student=profile)
+
+            if practice_ids:
+                print(LessonEnrollment.objects.filter(id__in=practice_ids))
+                context['practices'] = LessonEnrollment.objects.filter(id__in=practice_ids)
         
         elif profile.is_teacher():
             context['is_teacher'] = True

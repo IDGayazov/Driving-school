@@ -66,12 +66,19 @@ body {
     color: #ffdd57;
 }
 
+.wrapper {
+    display: grid;
+    grid-template-rows: 1fr auto; /* Контент будет занимать всю оставшуюся высоту, футер - авто */
+    min-height: 100%;
+}
+
 /* Футер */
 footer {
     background-color: #1E3A8A;
     color: #fff;
     padding: 20px 0;
     text-align: center;
+    margin-top: auto;
 }
 footer .social-links {
     margin-top: 10px;

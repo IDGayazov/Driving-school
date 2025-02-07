@@ -62,11 +62,16 @@
                     </div>
                 {% endif %}
                 <h3>Записан на следующие курсы по практике:</h3>
-                <div class="profile-course-card">
-                    <h3>Вождение</h3>
-                    <p><strong>Инструктор:</strong> Иванов Иван Иванович</p>
-                    <p><strong>Дата начала:</strong> 10 марта 2025</p>
-                </div>
+                {% for practice in practices %}
+                    <div class="profile-course-card">
+                        <h3>Вождение</h3>
+                        <p>
+                            <strong>Инструктор:</strong>
+                            <a style="color:white" href="{% url 'users:profile' pk=practice.instructor.id %}">{{practice.instructor}}</a>
+                        </p>
+                        <p><strong>Дата начала:</strong>{{practice.date}}</p>
+                    </div>
+                {% endfor %}
             {% endif %}
 
             {% if is_teacher %}
@@ -89,9 +94,11 @@
                 <h3>Инструктор по вождению у студентов:</h3>
                 {% for student in students %}
                     <div class="profile-course-card">
-                        <p>{{student.first_name}}</p>
-                        <p>{{student.last_name}}</p>
-                        <a href="{% url 'users:profile' pk=student.id %}"><p>{{student.username}}</p></a>
+                        <p>
+                            <p>{{student.first_name}}</p>
+                            <p>{{student.last_name}}</p>
+                            <a style="color:white" href="{% url 'users:profile' pk=student.id %}"><p>{{student.username}}</p></a>
+                        </p>
                     </div>
                 {% endfor %}
             {% endif %}
