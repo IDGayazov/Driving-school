@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+
+{% block title %}Практика{% endblock %}
+
+{% block content %}
+<h1>Записи на занятия</h1>
+
+{% if user.is_authenticated and user.is_instructor %}
+    <div style="text-align: center; margin-bottom: 20px;">
+        <a href="{% url 'lessons:lessons_create' %}" class="btn btn-primary">Создать новое занятие</a>
+    </div>
+{% endif %}
+
+<!-- Форма для сортировки и фильтрации -->
+<div class="filters">
+    <form method="get" action="{% url 'lessons:lessons_list' %}">
+        <label for="sort_by">Сортировать по дате:</label>
+        <select name="sort_by" id="sort_by" onchange="this.form.submit()">
+            <option value="date_asc" {% if sort_by == 'date_asc' %}selected{% endif %}>По возрастанию</option>
+            <option value="date_desc" {% if sort_by == 'date_desc' %}selected{% endif %}>По убыванию</option>
+        </select>
+
+        <label for="filter_by">Фильтровать по статусу:</label>
+        <select name="filter_by" id="filter_by" onchange="this.form.submit()">
+            <option value="">Все</option>
+            <option value="available" {% if filter_by == 'available' %}selected{% endif %}>Свободно</option>
+            <option value="booked" {% if filter_by == 'booked' %}selected{% endif %}>Занято</option>
+        </select>
+    </form>
+</div>
+
+<!-- Список занятий -->
+<div class="lesson-cards">
+    {% for registration in registrations %}
+        <div class="lesson-card" id="lesson-{{ registration.id }}">
+            {% if user.is_instructor or user.is_admin %}
+                <button class="delete-btn" onclick="deleteLesson({{ registration.id }})"
+                    {% if user.is_instructor and registration.instructor != user %}style="display: none;"{% endif %}>
+                    &times; <!-- Крестик -->
+                </button>
+            {% endif %}
+            <h2>Занятие {{ registration.date }}</h2>
+            <p><strong>Инструктор:</strong> {{ registration.instructor }}</p>
+            <p><strong>Марка машины:</strong> {{ registration.car_brand }}</p>
+            <p><strong>Гос номер машины:</strong> {{ registration.car_number }}</p>
+            <p><strong>Статус:</strong> <span class="status" data-status="{{ registration.is_booked|yesno:'Занято,Свободно' }}">{{ registration.is_booked|yesno:"Занято,Свободно" }}</span></p>
+            {% if user.is_authenticated %}
+                {% if user.is_student %}
+                    {% if not registration.is_booked %}
+                        <button onclick="enrollLesson({{ registration.id }})" class="btn btn-primary">Записаться на занятие</button>
+                    {% else %}
+                        {% if registration.student.id == user.id %}
+                            <button onclick="cancelEnrollment({{ registration.id }})" class="btn btn-danger">Отменить запись</button>
+                        {% else %}
+                            <p class="message">Это занятие уже занято другим студентом.</p>
+                        {% endif %}
+                    {% endif %}
+                {% else %}
+                    <p class="message">Запись на занятие доступна только для студентов.</p>
+                {% endif %}
+            {% else %}
+                <p class="message">Войдите в систему, чтобы записаться на занятие.</p>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+
+<meta name="csrf-token" content="{{ csrf_token }}">
+
+<script>
+function enrollLesson(lessonId) {
+    const csrfToken = document.querySelector('[name=csrf-token]').content;  // Извлеките CSRF-токен
+    fetch(`/lessons/enrollLesson/${lessonId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrfToken,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({})
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const lessonCard = document.getElementById(`lesson-${lessonId}`);
+            lessonCard.querySelector('.status').textContent = 'Занято';
+            lessonCard.querySelector('.status').setAttribute('data-status', 'Занято');
+            lessonCard.querySelector('button').remove();
+            lessonCard.insertAdjacentHTML('beforeend', '<button onclick="cancelEnrollment({{ registration.id }})" class="btn btn-danger">Отменить запись</button>');
+        } else {
+            alert('Ошибка при записи на занятие.');
+        }
+    })
+    .catch(error => {
+        console.error('Ошибка:', error);
+    });
+}
+
+function cancelEnrollment(lessonId) {
+    const csrfToken = document.querySelector('[name=csrf-token]').content;  // Извлеките CSRF-токен
+    fetch(`/lessons/cancelEnrollment/${lessonId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrfToken,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({})
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const lessonCard = document.getElementById(`lesson-${lessonId}`);
+            lessonCard.querySelector('.status').textContent = 'Свободно';
+            lessonCard.querySelector('.status').setAttribute('data-status', 'Свободно');
+            lessonCard.querySelector('button').remove();
+            lessonCard.insertAdjacentHTML('beforeend', '<button onclick="enrollLesson({{ registration.id }})" class="btn btn-primary">Записаться на занятие</button>');
+        } else {
+            alert('Ошибка при отмене записи.');
+        }
+    })
+    .catch(error => {
+        console.error('Ошибка:', error);
+    });
+}
+
+    function deleteLesson(lessonId) {
+    if (confirm('Вы уверены, что хотите удалить это занятие?')) {
+        const csrfToken = document.querySelector('[name=csrf-token]').content;  // Извлеките CSRF-токен
+        fetch(`/lessons/delete/${lessonId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({})
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const lessonCard = document.getElementById(`lesson-${lessonId}`);
+                lessonCard.remove();  // Удаляем карточку из DOM
+            } else {
+                alert(data.error || 'Ошибка при удалении занятия.');
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+        });
+    }
+}
+</script>
+{% endblock %}
