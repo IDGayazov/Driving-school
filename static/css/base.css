@@ -6,6 +6,8 @@
 }
 
 body {
+    height: 100%;
+    margin: 0;
     font-family: Arial, sans-serif;
     line-height: 1.6;
     background-color: #F4F7FB;
@@ -68,7 +70,7 @@ body {
 
 .wrapper {
     display: grid;
-    grid-template-rows: 1fr auto; /* Контент будет занимать всю оставшуюся высоту, футер - авто */
+    grid-template-rows: 1fr auto; 
     min-height: 100%;
 }
 
@@ -79,6 +81,9 @@ footer {
     padding: 20px 0;
     text-align: center;
     margin-top: auto;
+    position: absolute;
+    bottom: 0;
+    left: 0;
 }
 footer .social-links {
     margin-top: 10px;

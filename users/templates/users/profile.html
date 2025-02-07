@@ -58,7 +58,7 @@
                             <strong>Преподаватель:</strong>
                             <a style="color: white" href={% url 'users:profile' pk=course.created_by.id  %}>{{course.created_by}}</a>
                         </p>
-                        <p><strong>Дата начала:</strong>{{course.start_date}}</p>
+                        <p><strong>Дата начала:</strong> {{course.start_date}}</p>
                     </div>
                 {% endif %}
                 <h3>Записан на следующие курсы по практике:</h3>
@@ -69,7 +69,7 @@
                             <strong>Инструктор:</strong>
                             <a style="color:white" href="{% url 'users:profile' pk=practice.instructor.id %}">{{practice.instructor}}</a>
                         </p>
-                        <p><strong>Дата начала:</strong>{{practice.date}}</p>
+                        <p><strong>Дата:</strong>  {{practice.date}}</p>
                     </div>
                 {% endfor %}
             {% endif %}
@@ -94,11 +94,8 @@
                 <h3>Инструктор по вождению у студентов:</h3>
                 {% for student in students %}
                     <div class="profile-course-card">
-                        <p>
-                            <p>{{student.first_name}}</p>
-                            <p>{{student.last_name}}</p>
-                            <a style="color:white" href="{% url 'users:profile' pk=student.id %}"><p>{{student.username}}</p></a>
-                        </p>
+                        <p> {{student.first_name}} {{student.last_name}} <p>
+                        <a style="color:white" href="{% url 'users:profile' pk=student.id %}"><p>{{student.username}}</p></a>
                     </div>
                 {% endfor %}
             {% endif %}
