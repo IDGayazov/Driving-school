@@ -21,12 +21,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-qq_m4^j#pqs_tevf&!_$ccclhyv5zvp-06+o(pt@)%f%_wmo_w'
+
+SECRET_KEY=os.environ.get('SECRET_KEY', 'django-insecure-qq_m4^j#pqs_tevf&!_$ccclhyv5zvp-06+o(pt@)%f%_wmo_w')
+# SECRET_KEY = 'django-insecure-qq_m4^j#pqs_tevf&!_$ccclhyv5zvp-06+o(pt@)%f%_wmo_w'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost', 'service-db'
+]
 
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/login"
@@ -85,11 +89,11 @@ WSGI_APPLICATION = 'project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'auto_school',
-        'USER': 'admin',
-        'PASSWORD': 'admin',
-        'HOST': 'localhost',
-        'PORT': '5434'
+        'NAME': os.environ.get('POSTGRES_DB', 'auto_school'),
+        'USER': os.environ.get('POSTGRES_USER', 'admin'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'admin'),
+        'HOST': os.environ.get('DATABASE_HOST', 'service-db'),
+        'PORT': os.environ.get('DATABASE_PORT', '5432'),
     }
 }
 
