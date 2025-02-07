@@ -2,6 +2,7 @@ from django.shortcuts import render, HttpResponseRedirect
 from django.urls  import reverse, reverse_lazy
 from django.views.generic.base import TemplateView
 
+from main.models import Course, Enrollment
 from users.forms import LoginForm, RegisterForm, UserProfileForm
 from django.contrib import auth
 from users.models import Users
@@ -33,6 +34,45 @@ class UserProfileView(DetailView):
     model = Users
     template_name = 'users/profile.html'
     title = 'Профиль'
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Добавляем дополнительные данные в контекст
+
+        user = self.request.user
+
+        profile = Users.objects.get(pk=self.kwargs['pk'])
+        context['profile'] = profile
+
+        if profile.is_student():
+            context['is_student'] = True
+            course_ids = profile.enrollment_set.values_list('course', flat=True)
+            if course_ids:
+                context['course'] = Course.objects.filter(id__in=course_ids)[0]    
+        
+        elif profile.is_teacher():
+            context['is_teacher'] = True
+
+            courses_with_students = {}
+
+            courses = Course.objects.filter(created_by=profile)
+            
+            for course in courses:
+                enrollments = Enrollment.objects.select_related('student').filter(course=course)
+                students = [enrollment.student for enrollment in enrollments]
+                courses_with_students[course] = students
+
+            context['courses_with_students'] = courses_with_students
+        
+        elif profile.is_instructor():
+            context['is_instructor'] = True
+            context['students'] = Users.objects.all().filter(role='student')
+        
+        elif profile.is_admin():
+            context['is_admin'] = True
+
+        return context
 
 
 class UserProfileEditView(UpdateView):
