@@ -36,4 +36,7 @@ class Users(AbstractUser):
 
     def is_teacher(self):
         return self.has_role('teacher')
+
+    def get_full_name(self):
+        return f"{self.first_name} {self.last_name}"
     
