@@ -82,8 +82,8 @@ def cancel_enrollment(request, lesson_id):
 def delete_lesson(request, lesson_id):
     lesson = get_object_or_404(LessonEnrollment, id=lesson_id)
 
-    if not (request.user.is_admin or (request.user.is_instructor and lesson.instructor == request.user)):
-        return JsonResponse({'success': False, 'error': 'У вас нет прав на удаление этого занятия.'})
+    if  ( (request.user.is_instructor() and lesson.instructor != request.user) or request.user.is_student() or request.user.is_teacher()):
+        return JsonResponse({'success': False, 'error': 'У вас нет прав на удаление этого занятия.'}, status=403)
 
     lesson.delete()
     return JsonResponse({'success': True})
