@@ -6,6 +6,7 @@ from main.models import Course, Enrollment
 from users.forms import LoginForm, RegisterForm, UserProfileForm
 from django.contrib import auth
 from users.models import Users
+from lessons.models import LessonEnrollment
 from django.contrib.auth.views import LoginView
 
 from django.views.generic.edit import CreateView, UpdateView
@@ -66,8 +67,10 @@ class UserProfileView(DetailView):
             context['courses_with_students'] = courses_with_students
         
         elif profile.is_instructor():
+            enrollments = LessonEnrollment.objects.select_related('student').filter(instructor=profile)
+            students = [enrollment.student for enrollment in enrollments]
             context['is_instructor'] = True
-            context['students'] = Users.objects.all().filter(role='student')
+            context['students'] = students
         
         elif profile.is_admin():
             context['is_admin'] = True

@@ -87,18 +87,13 @@
 
             {% if is_instructor %}
                 <h3>Инструктор по вождению у студентов:</h3>
-                <div class="profile-course-card">
-                    <p>Иванов Иван Иванович</p>
-                </div>
-                <div class="profile-course-card">
-                    <p>Иванов Иван Иванович</p>
-                </div>
-                <div class="profile-course-card">
-                    <p>Иванов Иван Иванович</p>
-                </div>
-                <div class="profile-course-card">
-                    <p>Иванов Иван Иванович</p>
-                </div>
+                {% for student in students %}
+                    <div class="profile-course-card">
+                        <p>{{student.first_name}}</p>
+                        <p>{{student.last_name}}</p>
+                        <a href="{% url 'users:profile' pk=student.id %}"><p>{{student.username}}</p></a>
+                    </div>
+                {% endfor %}
             {% endif %}
 
             {% if is_admin %}

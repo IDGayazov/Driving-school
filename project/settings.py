@@ -37,7 +37,7 @@ LOGOUT_REDIRECT_URL = "/login"
 INSTALLED_APPS = [
     "users.apps.UsersConfig",
     "main.apps.MainConfig",
-    "lessons",
+    "lessons.apps.LessonsConfig",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
