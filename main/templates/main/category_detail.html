@@ -88,7 +88,7 @@
                 <p><strong>Доступно мест:</strong> {{ course.places_count }}</p>
 
                 {% if user.is_student %}
-                    {% if course.id in enrolled %}
+                    {% if course.id in enrolled and course.places_count > 0 %}
                         <p>Вы записаны на этот курс</p>
                     {% else %}
                         <p>Запись недоступна</p>
