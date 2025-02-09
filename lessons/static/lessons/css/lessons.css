@@ -12,7 +12,6 @@ h1 {
     margin-bottom: 30px;
 }
 
-/* Стили для фильтров */
 .filters {
     margin-bottom: 30px;
     text-align: center;
@@ -88,11 +87,11 @@ h1 {
 }
 
 .lesson-card .status[data-status="Занято"] {
-    color: #EF4444; /* Красный для занятых занятий */
+    color: #EF4444;
 }
 
 .lesson-card .status[data-status="Свободно"] {
-    color: #34D399; /* Зеленый для свободных занятий */
+    color: #34D399;
 }
 
 /* Стили для кнопок */
@@ -307,13 +306,13 @@ h1 {
     background: none;
     border: none;
     font-size: 20px;
-    color: #EF4444; /* Красный цвет */
+    color: #EF4444;
     cursor: pointer;
     transition: color 0.3s ease;
 }
 
 .delete-btn:hover {
-    color: #DC2626; /* Темно-красный при наведении */
+    color: #DC2626;
 }
 
 .delete-btn {
@@ -323,11 +322,11 @@ h1 {
     background: none;
     border: none;
     font-size: 20px;
-    color: #EF4444; /* Красный цвет */
+    color: #EF4444;
     cursor: pointer;
     transition: color 0.3s ease;
 }
 
 .delete-btn:hover {
-    color: #DC2626; /* Темно-красный при наведении */
+    color: #DC2626;
 }

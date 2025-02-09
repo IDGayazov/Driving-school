@@ -18,7 +18,6 @@ class LessonEnrollment(models.Model):
     )
     is_booked = models.BooleanField(default=False)
 
-    # Новые поля с значениями по умолчанию
     car_brand = models.CharField(max_length=50, verbose_name="Марка машины", default="Не указано")
     car_number = models.CharField(
         max_length=10,
@@ -29,7 +28,7 @@ class LessonEnrollment(models.Model):
                 message="Гос номер должен быть в формате: А123ВС45 или А123ВС456"
             )
         ],
-        default="А000АА00"  # Значение по умолчанию для гос номера
+        default="А000АА00"
     )
 
     def __str__(self):

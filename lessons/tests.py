@@ -12,28 +12,24 @@ from django.core.exceptions import ValidationError
 
 class LessonsViewsTestCase(TestCase):
     def setUp(self):
-        # Создаем тестового пользователя (администратора)
         self.admin_user = Users.objects.create_user(
             username='admin',
             password='adminpassword',
             role='admin'
         )
 
-        # Создаем тестового пользователя (инструктора)
         self.instructor_user = Users.objects.create_user(
             username='instructor',
             password='instructorpassword',
             role='instructor'
         )
 
-        # Создаем тестового пользователя (студента)
         self.student_user = Users.objects.create_user(
             username='student',
             password='studentpassword',
             role='student'
         )
 
-        # Создаем тестовое занятие
         self.lesson = LessonEnrollment.objects.create(
             date='2023-12-01',
             instructor=self.instructor_user,  # Используем self.instructor_user
@@ -41,24 +37,20 @@ class LessonsViewsTestCase(TestCase):
             car_number='A123BC45'
         )
 
-        # Инициализация клиента для тестирования
         self.client = Client()
 
     def test_lessons_list_view(self):
-        # Проверка доступа к списку занятий
         response = self.client.get(reverse('lessons:lessons_list'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'lessons/lessons_list.html')
 
     def test_lessons_create_view_get(self):
-        # Проверка доступа к форме создания занятия для инструктора
         self.client.force_login(self.instructor_user)
         response = self.client.get(reverse('lessons:lessons_create'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'lessons/lessons_create.html')
 
     def test_lessons_create_view_post(self):
-        # Проверка создания занятия инструктором
         self.client.force_login(self.instructor_user)
         data = {
             'date': '2026-12-02',
@@ -71,7 +63,6 @@ class LessonsViewsTestCase(TestCase):
         self.assertTrue(LessonEnrollment.objects.filter(car_brand='Honda').exists())
 
     def test_enroll_lesson_view(self):
-        # Проверка записи студента на занятие
         self.client.force_login(self.student_user)
         response = self.client.post(reverse('lessons:enroll_lesson', args=[self.lesson.id]))
         self.assertEqual(response.status_code, 302)  # Редирект после успешной записи
@@ -80,7 +71,6 @@ class LessonsViewsTestCase(TestCase):
         self.assertTrue(self.lesson.is_booked)
 
     def test_cancel_enrollment_view(self):
-        # Проверка отмены записи студента на занятие
         self.lesson.student = self.student_user
         self.lesson.is_booked = True
         self.lesson.save()
@@ -93,7 +83,6 @@ class LessonsViewsTestCase(TestCase):
         self.assertFalse(self.lesson.is_booked)
 
     def test_delete_lesson_view_admin(self):
-        # Проверка удаления занятия администратором
         self.client.force_login(self.admin_user)
         response = self.client.post(reverse('lessons:delete_lesson', args=[self.lesson.id]))
         self.assertEqual(response.status_code, 200)
@@ -101,7 +90,6 @@ class LessonsViewsTestCase(TestCase):
         self.assertFalse(LessonEnrollment.objects.filter(id=self.lesson.id).exists())
 
     def test_delete_lesson_view_instructor(self):
-        # Проверка удаления занятия инструктором (если он создал занятие)
         self.client.force_login(self.instructor_user)
         response = self.client.post(reverse('lessons:delete_lesson', args=[self.lesson.id]))
         self.assertEqual(response.status_code, 200)
@@ -109,7 +97,6 @@ class LessonsViewsTestCase(TestCase):
         self.assertFalse(LessonEnrollment.objects.filter(id=self.lesson.id).exists())
 
     def test_delete_lesson_view_instructor_denied(self):
-        # Проверка запрета удаления занятия, если инструктор не создал его
         another_instructor = Users.objects.create_user(
             username='another_instructor',
             password='anotherpassword',
@@ -122,7 +109,6 @@ class LessonsViewsTestCase(TestCase):
         self.assertTrue(LessonEnrollment.objects.filter(id=self.lesson.id).exists())
 
     def test_delete_lesson_view_student_denied(self):
-        # Проверка запрета удаления занятия студентом
         self.client.force_login(self.student_user)
         response = self.client.post(reverse('lessons:delete_lesson', args=[self.lesson.id]))
         self.assertEqual(response.status_code, 403)
