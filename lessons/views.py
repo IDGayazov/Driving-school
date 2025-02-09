@@ -41,7 +41,7 @@ def lesson_detail(request, pk):
     return render(request, 'lesson_detail.html', {
         'lesson': lesson,
         'user_enrolled': user_enrolled,
-        'instructor': instructor.get_full_name()  # Исправлено: instructor и get_full_name()
+        'instructor': instructor.get_full_name()
     })
 
 @login_required
